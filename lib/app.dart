@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager_app/UI/screens/splash_screen.dart';
 
+import 'UI/screens/forgot_password_email_screen.dart';
+import 'UI/screens/main_bottom_bav_holder_screen.dart';
+import 'UI/screens/reset_password_screen.dart';
 import 'UI/screens/sign_in_screen.dart';
 import 'UI/screens/sign_up_screen.dart';
+import 'UI/screens/verify_otp_screen_forget_password.dart';
 
 class TaskManegerApp extends StatelessWidget {
   const TaskManegerApp({super.key});
@@ -15,6 +19,10 @@ class TaskManegerApp extends StatelessWidget {
       routes: {
         '/login' : (_) => const SignInScreen(),
         '/signup' : (_) => const SignUpScreen(),
+        '/forgetPass' : (_) => const ForgotPasswordEmailScreen(),
+        '/reset': (_) => const ResetPasswordScreen(),
+        '/otp': (_) => const ForgotPasswordVerifyOtpScreen(),
+        '/mainNav': (_) => const MainBottomNavHolderScreen(),
       },
       //themeing
       theme: ThemeData(
@@ -64,9 +72,18 @@ class TaskManegerApp extends StatelessWidget {
 
           ),
         ),
+        textTheme: TextTheme(
+          titleLarge: TextStyle(fontSize: 24,fontWeight: FontWeight.w600),
+            labelMedium: TextStyle(
+              fontSize: 14, fontWeight: FontWeight.w400, color: Colors.grey,
+            ),
+        ),
       ),
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
     );
   }
 }
+
+
+///////////////////
