@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:task_manager_app/UI/screens/reset_password_screen.dart';
 import 'package:task_manager_app/UI/screens/sign_in_screen.dart';
 import 'package:task_manager_app/UI/screens/sign_up_screen.dart';
+import 'package:task_manager_app/UI/screens/update_profile_screen.dart';
 import 'package:task_manager_app/UI/screens/verify_otp_screen_forget_password.dart';
 import 'package:task_manager_app/UI/utils/asset_paths.dart';
 import 'package:task_manager_app/UI/widgets/background_screen.dart';
@@ -24,7 +25,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (mounted) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const MainBottomNavHolderScreen()),
+        MaterialPageRoute(builder: (context) => const SignInScreen()),
       );
     }
   }

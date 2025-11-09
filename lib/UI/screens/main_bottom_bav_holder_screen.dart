@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:task_manager_app/UI/screens/tasksPages/cancelled_task_list_screen.dart';
+import 'package:task_manager_app/UI/screens/tasksPages/completed_task_list_screen.dart';
+import 'package:task_manager_app/UI/screens/tasksPages/new_task_list_screen.dart';
+import 'package:task_manager_app/UI/screens/tasksPages/progress_task_list_screen.dart';
 
 import '../widgets/appbar_custom.dart';
 
@@ -12,11 +16,18 @@ class MainBottomNavHolderScreen extends StatefulWidget {
 
 class _MainBottomNavHolderScreenState extends State<MainBottomNavHolderScreen> {
   int _selectedIndex = 0;
+  final List<Widget> _pages = [
+    NewTaskListScreen(),
+    ProgressTaskListScreen(),
+    CancelledTaskListScreen(),
+    CompletedTaskListScreen(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: TaskManagerAppBar(),
+      body: _pages[_selectedIndex],
       bottomNavigationBar: NavigationBar(
         selectedIndex: _selectedIndex,
         onDestinationSelected: (int index) {

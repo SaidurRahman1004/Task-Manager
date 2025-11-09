@@ -64,6 +64,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 //login Button
   void _onSignIn() {
+    Navigator.pushNamed(context, '/mainNav');
   }
 //forgot password
   void _onForgotPassword() {
