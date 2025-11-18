@@ -5,6 +5,8 @@ import 'package:task_manager_app/UI/screens/sign_in_screen.dart';
 import 'package:task_manager_app/UI/screens/sign_up_screen.dart';
 import 'package:task_manager_app/UI/screens/update_profile_screen.dart';
 import 'package:task_manager_app/UI/screens/verify_otp_screen_forget_password.dart';
+import 'package:task_manager_app/UI/screens/main_bottom_bav_holder_screen.dart';
+import 'package:task_manager_app/UI/controllers/auth_controller.dart';
 import 'package:task_manager_app/UI/utils/asset_paths.dart';
 import 'package:task_manager_app/UI/widgets/background_screen.dart';
 
@@ -22,11 +24,14 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   Future<void> _navigateToNextScreen() async {
     await Future.delayed(const Duration(seconds: 2));
-    if (mounted) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const SignInScreen()),
-      );
+    bool isLoggedIn =
+        await AuthController.isuserAlreadyLoggedIn(); // Check login status if user already logged in
+
+    if (isLoggedIn) {
+      await AuthController.loadUserData(); // Load user data into memory
+      Navigator.pushReplacementNamed(context, '/mainNav');
+    }else{
+      Navigator.pushReplacementNamed(context, '/login');
     }
   }
 
