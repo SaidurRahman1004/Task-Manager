@@ -170,6 +170,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if(response.isSuuccess){
           _clearTextFields();
           showSnackBarMessage(context, 'Sign Up Successful! Please Log In.');
+          Navigator.pushReplacementNamed(context, '/login');
         }else{
           showSnackBarMessage(context, response.errorMassage);
         }

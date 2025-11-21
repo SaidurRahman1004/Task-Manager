@@ -9,6 +9,7 @@ import 'package:task_manager_app/UI/controllers/auth_controller.dart';
 import 'package:task_manager_app/UI/widgets/snack_bar_message.dart';
 
 import '../utils/asset_paths.dart';
+import 'main_bottom_bav_holder_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -46,9 +47,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   TextFormField(
                     controller: _emailTEController,
                     validator: (String? value) {
-                      if (value == null || value
-                          .trim()
-                          .isEmpty) {
+                      if (value == null || value.trim().isEmpty) {
                         return 'Please enter your email';
                       } else if (!EmailValidator.validate(value)) {
                         return 'Please enter a valid email';
@@ -61,13 +60,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     controller: _passwordTEController,
                     decoration: InputDecoration(hintText: 'Password'),
                     validator: (String? value) {
-                      if (value == null || value
-                          .trim()
-                          .isEmpty) {
+                      if (value == null || value.trim().isEmpty) {
                         return 'Please enter your password';
-                      } else if (value
-                          .trim()
-                          .length < 6) {
+                      } else if (value.trim().length < 6) {
                         return 'Password must be at least 6 characters long';
                       }
                       return null;
@@ -76,7 +71,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   SizedBox(height: 8),
                   Visibility(
                     visible: _signInProgress == false,
-                    replacement: Center(child: CircularProgressIndicator(),),
+                    replacement: Center(child: CircularProgressIndicator()),
                     child: FilledButton(
                       onPressed: _onSignIn,
                       child: Icon(Icons.arrow_circle_right_outlined),
@@ -102,8 +97,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                 text: ' Sign Up',
                                 style: TextStyle(color: Colors.blue),
                                 recognizer:
-                                TapGestureRecognizer() // TapGestureRecognizer Clickable Widgte
-                                  ..onTap = _onSignUpPage,
+                                    TapGestureRecognizer() // TapGestureRecognizer Clickable Widgte
+                                      ..onTap = _onSignUpPage,
                               ),
                             ],
                           ),
@@ -131,27 +126,27 @@ class _SignInScreenState extends State<SignInScreen> {
   //sign in method
   Future<void> _signIn() async {
     _signInProgress = true;
-   setState(() {
-
-   });
-      Map<String, dynamic> requestBody = {
-        'email': _emailTEController.text.trim(),
-        'password': _passwordTEController.text.trim(),
-
-      };
-      final NetworkResponse response = await Networkcaller.postRequest(
-          Urls.loginEndpoint, body: requestBody
+    setState(() {});
+    Map<String, dynamic> requestBody = {
+      'email': _emailTEController.text.trim(),
+      'password': _passwordTEController.text.trim(),
+    };
+    final NetworkResponse response = await Networkcaller.postRequest(
+      Urls.loginEndpoint,
+      body: requestBody,
+    );
+    if (response.isSuuccess) {
+      UserModel userModel = UserModel.fromJson(response.body['data']);
+      String accessToken = response.body['token'];
+      await AuthController.saveUserData(accessToken, userModel);
+      //Navigator.pushReplacementNamed(context, '/mainNav');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => MainBottomNavHolderScreen()),
       );
-      if (response.isSuuccess) {
-        UserModel userModel = UserModel.fromJson(response.body['data']);
-        String accessToken = response.body['token'];
-        await AuthController.saveUserData(accessToken, userModel);
-        Navigator.pushReplacementNamed(context, '/mainNav');
-
-      }else{
-        showSnackBarMessage(context, response.errorMassage);
-      }
-
+    } else {
+      showSnackBarMessage(context, response.errorMassage);
+    }
   }
 
   //forgot password

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
+import '../../UI/controllers/auth_controller.dart';
 
 class Networkcaller {
   // GET Request
@@ -9,9 +10,12 @@ class Networkcaller {
     try {
       Uri uri = Uri.parse(url); // Parse the URL
       _logRequest(url); // Log the request
-
+///token added in header for authentication
       Response response = await get(
         uri,
+        headers: {
+          'token': AuthController.accessToken ?? "",
+        }
       ); // Send GET request and await for response
       _logResponse(url, response); // Log the response
 
@@ -46,9 +50,13 @@ class Networkcaller {
     try {
       Uri uri = Uri.parse(url);
       _logRequest(url, body: body); // Log the request with body
+      ///token added in header for authentication
       Response response = await post(
         uri,
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json',
+          'token': AuthController.accessToken ?? "",
+        },
+
         // Set content type to JSON
         body: jsonEncode(body), // Encode body to JSON
       );
