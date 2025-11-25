@@ -73,7 +73,10 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
   }
 
   void _onTapAddNewTaskButton() {
-    Navigator.pushNamed(context, '/newTask');
+    Navigator.pushNamed(context, '/newTask').then((_){
+      _getNewTaskList();
+      _getTaskCountList();
+    });
   }
 
   //Sumury Card
