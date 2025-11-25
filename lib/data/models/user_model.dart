@@ -15,20 +15,20 @@ class UserModel {
 
   factory UserModel.fromJson(Map<String, dynamic> jsonData) {
     return UserModel(
-      id: jsonData['id'],
-      email: jsonData['email'],
-      firstName: jsonData['first_name'],
-      lastName: jsonData['last_name'],
-      mobile: jsonData['mobile'],
+      id: jsonData['_id'] ?? '',
+      email: jsonData['email'] ?? '',
+      firstName: jsonData['firstName'] ?? '',
+      lastName: jsonData['lastName'] ?? '',
+      mobile: jsonData['mobile'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson(){
     return {
-      'id': id,
+      '_id': id,
       'email': email,
-      'first_name': firstName,
-      'last_name': lastName,
+      'firstName': firstName,
+      'lastName': lastName,
       'mobile': mobile,
     };
   }

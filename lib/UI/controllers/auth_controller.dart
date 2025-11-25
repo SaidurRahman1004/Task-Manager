@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager_app/data/models/user_model.dart';
 
@@ -14,11 +15,21 @@ class AuthController {
   static Future<void> saveUserData(String token, UserModel userModel) async {
     SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance(); // Get SharedPreferences instance
-    await sharedPreferences.setString(_tokenKey, token); // Save token
-    await sharedPreferences.setString(
-      _userKey,
-      jsonEncode(userModel.toJson()),
-    ); // Save user info as JSON string
+
+    if(token.isNotEmpty){
+      // Save user info as JSON string
+      await sharedPreferences.setString(_tokenKey, token); // Save token
+      await sharedPreferences.setString(
+        _userKey,
+        jsonEncode(userModel.toJson()),
+      );
+      accessToken = token; // Save token in memory
+      user = userModel; // Save user model in memory
+      debugPrint('User Data Saved');
+    }else{
+      debugPrint('Token is empty. User Data not saved.');
+    }
+
   }
 
   /// Method to load token and User Info when app starts get from SharedPreferences

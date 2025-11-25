@@ -135,15 +135,23 @@ class _SignInScreenState extends State<SignInScreen> {
       Urls.loginEndpoint,
       body: requestBody,
     );
+    //updating ui
+    _signInProgress = false;
+    setState(() {});
+
+    ///handling response
     if (response.isSuuccess) {
-      UserModel userModel = UserModel.fromJson(response.body['data']);
-      String accessToken = response.body['token'];
-      await AuthController.saveUserData(accessToken, userModel);
-      //Navigator.pushReplacementNamed(context, '/mainNav');
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (_) => MainBottomNavHolderScreen()),
-      );
+      //save user data if available
+      if (response.body != null && response.body['data'] != null) {
+        UserModel userModel = UserModel.fromJson(response.body['data']);
+        String accessToken = response.body['token'] ?? '';
+        await AuthController.saveUserData(accessToken, userModel);
+        if (mounted) {
+          Navigator.pushReplacementNamed(context, '/mainNav');
+        }
+      }else{
+        showSnackBarMessage(context, 'Invalid response format.');
+      }
     } else {
       showSnackBarMessage(context, response.errorMassage);
     }

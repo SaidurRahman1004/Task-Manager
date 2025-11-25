@@ -1,10 +1,31 @@
-class TaskCountModel {
+import 'package:intl/intl.dart';
+
+class TaskModel {
   final String id;
-  final int sum;
+  final String title;
+  final String description;
+  final String status;
+  final String email;
+  final String createdDate;
 
-  TaskCountModel({required this.id, required this.sum});
+  TaskModel({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.status,
+    required this.email,
+    required this.createdDate,
+  });
 
-  factory TaskCountModel.fromJson(Map<String, dynamic> jsonData) {
-    return TaskCountModel(id: jsonData['id'], sum: jsonData['sum']);
+  //Factory method to create a TaskModel from JSON
+  factory TaskModel.fromJson(Map<String, dynamic> jsonData){
+    return TaskModel(
+        id: jsonData['_id'],
+        title: jsonData['title'],
+        description: jsonData['description'],
+        status: jsonData['status'],
+        email: jsonData['email'],
+        createdDate: DateFormat().format(DateTime.parse(jsonData['createdDate'])));
   }
+
 }

@@ -73,7 +73,7 @@ class Networkcaller {
         return NetworkResponse(
           isSuuccess: false,
           responseCode: response.statusCode,
-          errorMassage: decodedData['data'],
+          errorMassage: decodedData['data']?.toString() ?? 'Unknown error occurred',
         );
       }
     } catch (e) {

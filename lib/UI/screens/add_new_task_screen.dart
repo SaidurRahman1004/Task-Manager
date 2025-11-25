@@ -62,7 +62,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                   ),
                   SizedBox(height: 8),
                   Visibility(
-                    visible: _addNewTaskInProgress,
+                    visible: _addNewTaskInProgress == false,
                     replacement: Center(child: CenteredCircularProgress()),
                     child: FilledButton(
                       onPressed: _onTapSubmitButton,
