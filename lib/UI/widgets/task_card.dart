@@ -18,6 +18,7 @@ class TaskCard extends StatefulWidget {
   //for refreshing the task list after deletion
   final VoidCallback refreshList;
 
+
   @override
   State<TaskCard> createState() => _TaskCardState();
 }
@@ -25,6 +26,7 @@ class TaskCard extends StatefulWidget {
 class _TaskCardState extends State<TaskCard> {
   // To manage the state of status change operation
   bool _changeStatusInProgress = false;
+  bool _deleteInProgress = false;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class _TaskCardState extends State<TaskCard> {
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   decoration: BoxDecoration(
-                    color:_getStatusBarColor(widget.taskModel.status),
+                    color: _getStatusBarColor(widget.taskModel.status),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Text(
@@ -59,8 +61,10 @@ class _TaskCardState extends State<TaskCard> {
                 ),
                 Spacer(),
                 IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.delete, color: Colors.grey),
+                  onPressed: () {
+                    showDeleteConfirmationDialog();
+                  },
+                  icon: Icon(Icons.delete, color: Colors.red),
                 ),
                 Visibility(
                   visible: _changeStatusInProgress == false,
@@ -92,36 +96,37 @@ class _TaskCardState extends State<TaskCard> {
               ListTile(
                 title: Text('New'),
                 trailing: _isCurrentStatus('New') ? Icon(Icons.done) : null,
-                onTap: (){
+                onTap: () {
                   _onTapChangeTaskTile('New');
                 },
-
               ),
               ListTile(
                 title: Text('Progress'),
-                trailing: _isCurrentStatus('Progress') ? Icon(Icons.done) : null,
-                onTap: (){
+                trailing: _isCurrentStatus('Progress')
+                    ? Icon(Icons.done)
+                    : null,
+                onTap: () {
                   _onTapChangeTaskTile('Progress');
                 },
-
               ),
               ListTile(
                 title: Text('Cancelled'),
-                trailing: _isCurrentStatus('Cancelled') ? Icon(Icons.done) : null,
-                onTap: (){
+                trailing: _isCurrentStatus('Cancelled')
+                    ? Icon(Icons.done)
+                    : null,
+                onTap: () {
                   _onTapChangeTaskTile('Cancelled');
                 },
-
               ),
               ListTile(
                 title: Text('Completed'),
-                trailing: _isCurrentStatus('Completed') ? Icon(Icons.done) : null,
-                onTap: (){
+                trailing: _isCurrentStatus('Completed')
+                    ? Icon(Icons.done)
+                    : null,
+                onTap: () {
                   _onTapChangeTaskTile('Completed');
                 },
-
               ),
-
             ],
           ),
         );
@@ -143,24 +148,27 @@ class _TaskCardState extends State<TaskCard> {
   }
 
   // Change the status of the task
-  Future<void> _chngeStatus(String status) async{
+  Future<void> _chngeStatus(String status) async {
     _changeStatusInProgress = true;
     setState(() {});
     final NetworkResponse response = await Networkcaller.getRequest(
       Urls.changeTaskStatusUrl(widget.taskModel.id, status),
     );
-    if(response.isSuuccess){
+    if (response.isSuuccess) {
       showSnackBarMessage(context, 'Task status changed to $status'); //comment
       widget.refreshList();
-    }else{
-      showSnackBarMessage(context, 'Failed to change task status ${response.errorMassage}');
+    } else {
+      showSnackBarMessage(
+        context,
+        'Failed to change task status ${response.errorMassage}',
+      );
     }
   }
 
   // Get the color for the status bar based on the task status
 
-  Color _getStatusBarColor(String status){
-    switch(status){
+  Color _getStatusBarColor(String status) {
+    switch (status) {
       case 'New':
         return Colors.blue;
       case 'Progress':
@@ -174,7 +182,51 @@ class _TaskCardState extends State<TaskCard> {
     }
   }
 
+  //Delet Task Functions
+  Future<void> _deleteTask(String taskId) async {
+    _deleteInProgress = true;
+    setState(() {});
+    final NetworkResponse response = await Networkcaller.getRequest(
+      Urls.deleteTaskById(taskId),
+    );
+    _deleteInProgress = false;
+    setState(() {});
+    if (response.isSuuccess) {
+      showSnackBarMessage(context, 'Task deleted successfully');
 
+      widget.refreshList();
+    } else {
+      showSnackBarMessage(
+        context,
+        'Failed to delete task: ${response.errorMassage}',
+      );
+    }
+  }
+
+  // Delete confirmation dialog
+  void showDeleteConfirmationDialog() {
+    showDialog(context: context, builder: (_){
+      return AlertDialog(
+        title: Text('Delete Task'),
+        content: Text('Are you sure you want to delete this task?'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Close the dialog
+            },
+            child: Text('Cancel'),
+          ),
+
+          TextButton(
+            onPressed: () {
+              _deleteTask(widget.taskModel.id);
+              Navigator.pop(context); // Close the dialog
+            },
+            child: Text('Delete'),
+          ),
+
+        ],
+      );
+    });
+  }
 }
-
-

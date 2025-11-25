@@ -45,7 +45,7 @@ class TaskManagerAppBar extends StatelessWidget implements PreferredSizeWidget {
               (predicate)=> false
 
           );
-        }, icon: Icon(Icons.logout))
+        }, icon: Icon(Icons.logout)),
       ],
     );
   }
