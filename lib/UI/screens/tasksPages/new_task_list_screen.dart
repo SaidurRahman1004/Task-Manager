@@ -47,7 +47,14 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
                 shrinkWrap: true,
                 primary: false,
                 itemBuilder: (_, index) {
-                  return TaskCard(taskModel: _newTaskList[index]);
+                  return TaskCard(
+                    taskModel: _newTaskList[index],
+                    refreshList: () {
+                      _getNewTaskList();
+                      _getTaskCountList();
+
+                    },
+                  );
                 },
                 separatorBuilder: (_, index) {
                   return SizedBox(height: 8);

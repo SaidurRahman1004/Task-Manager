@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart';
 import '../../UI/controllers/auth_controller.dart';
+import 'package:task_manager_app/app.dart';
+import '../../UI/screens/sign_in_screen.dart';
 
 class Networkcaller {
   // GET Request
@@ -10,12 +12,10 @@ class Networkcaller {
     try {
       Uri uri = Uri.parse(url); // Parse the URL
       _logRequest(url); // Log the request
-///token added in header for authentication
+      ///token added in header for authentication
       Response response = await get(
         uri,
-        headers: {
-          'token': AuthController.accessToken ?? "",
-        }
+        headers: {'token': AuthController.accessToken ?? ""},
       ); // Send GET request and await for response
       _logResponse(url, response); // Log the response
 
@@ -25,6 +25,13 @@ class Networkcaller {
           isSuuccess: true,
           responseCode: response.statusCode,
           body: decodedData,
+        );
+      } else if (response.statusCode == 401) {
+        await _onUnauthorize();
+        return NetworkResponse(
+          isSuuccess: false,
+          responseCode: response.statusCode,
+          errorMassage: 'Unauthorized Access',
         );
       } else {
         return NetworkResponse(
@@ -53,7 +60,8 @@ class Networkcaller {
       ///token added in header for authentication
       Response response = await post(
         uri,
-        headers: {'Content-Type': 'application/json',
+        headers: {
+          'Content-Type': 'application/json',
           'token': AuthController.accessToken ?? "",
         },
 
@@ -69,11 +77,21 @@ class Networkcaller {
           responseCode: response.statusCode,
           body: decodedData,
         );
-      } else {
+      }
+      else if (response.statusCode == 401) {
+        await _onUnauthorize();
         return NetworkResponse(
           isSuuccess: false,
           responseCode: response.statusCode,
-          errorMassage: decodedData['data']?.toString() ?? 'Unknown error occurred',
+          errorMassage: 'Unauthorized Access',
+        );
+      }
+      else {
+        return NetworkResponse(
+          isSuuccess: false,
+          responseCode: response.statusCode,
+          errorMassage:
+              decodedData['data']?.toString() ?? 'Unknown error occurred',
         );
       }
     } catch (e) {
@@ -86,18 +104,23 @@ class Networkcaller {
   }
 
   // Logging function Request for debugging only For Testing Purpose
-  static void _logRequest(String url,{ Map<String, dynamic>? body}){
+  static void _logRequest(String url, {Map<String, dynamic>? body}) {
     debugPrint(
       'Url: $url\n'
-          'Body: $body'
+      'Body: $body',
     );
   }
 
-  static void _logResponse(String url, Response response){
+  static Future<void> _onUnauthorize() async {
+    await AuthController.clearUserData();
+    Navigator.pushNamed(TaskManegerApp.navigatorKey.currentContext!, '/login');
+  }
+
+  static void _logResponse(String url, Response response) {
     debugPrint(
       'URL: $url\n'
-          'Status Code: ${response.statusCode}\n'
-          'Body: ${response.body}',
+      'Status Code: ${response.statusCode}\n'
+      'Body: ${response.body}',
     );
   }
 }

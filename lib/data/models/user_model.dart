@@ -4,6 +4,7 @@ class UserModel {
   final String firstName;
   final String lastName;
   final String mobile;
+  String get fullName=> '$firstName $lastName'; //computed property for show Full name
 
   UserModel({
     required this.id,

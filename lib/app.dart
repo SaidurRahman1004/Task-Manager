@@ -13,9 +13,12 @@ import 'UI/screens/verify_otp_screen_forget_password.dart';
 class TaskManegerApp extends StatelessWidget {
   const TaskManegerApp({super.key});
 
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'Task Manager App',
       //Routs
       routes: {

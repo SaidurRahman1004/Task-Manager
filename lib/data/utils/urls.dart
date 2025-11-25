@@ -4,6 +4,10 @@ class Urls{
   static const String loginEndpoint = '$_baseUrl/Login';
   static const String createNewTaskUrl = '$_baseUrl/createTask';
   static const String newTaskUrl = '$_baseUrl/listTaskByStatus/New';
+  static const String progressTasksUrl = '$_baseUrl/listTaskByStatus/Progress';
   static const String takCountUrl = '$_baseUrl/taskStatusCount';
+
+  // Function to generate URL for changing task status
+  static  String changeTaskStatusUrl(String taskId, String status)=> '$_baseUrl/updateTaskStatus/$taskId/$status';
 
 }

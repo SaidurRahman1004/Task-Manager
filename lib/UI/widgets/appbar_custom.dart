@@ -25,10 +25,10 @@ class TaskManagerAppBar extends StatelessWidget implements PreferredSizeWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Saidur Rahman",style: txtStyle.bodyLarge?.copyWith(
+                Text(AuthController.user?.fullName ?? "",style: txtStyle.bodyLarge?.copyWith(
                   color: Colors.white,
                 ),),
-                Text("saidurrahman1004@gmail.com",style: txtStyle.bodySmall?.copyWith(
+                Text(AuthController.user?.email ?? "",style: txtStyle.bodySmall?.copyWith(
                   color: Colors.white,
                 ),),
               ],
