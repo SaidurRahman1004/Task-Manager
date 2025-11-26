@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class PhotoPickerWidget extends StatelessWidget {
-   PhotoPickerWidget({super.key, required this.onPressed});
+   PhotoPickerWidget({super.key, required this.onPressed, this.PickedImage});
   VoidCallback onPressed;
+   final XFile? PickedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -52,10 +54,7 @@ class PhotoPickerWidget extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 10.0),
             child: Align(
               alignment: Alignment.centerLeft,
-              child: Text(
-                'No file chosen',
-                style: TextStyle(color: Colors.grey, fontSize: 14),
-              ),
+              child: PickedImage == null ? Text("Select Photo") : Text(PickedImage!.name),
             ),
           ),
         ),

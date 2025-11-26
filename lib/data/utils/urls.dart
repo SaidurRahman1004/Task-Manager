@@ -3,6 +3,7 @@ class Urls {
   static const String registerEndpoint = '$_baseUrl/Registration';
   static const String loginEndpoint = '$_baseUrl/Login';
   static const String createNewTaskUrl = '$_baseUrl/createTask';
+  static const String updateProfileUrl  = '$_baseUrl/ProfileUpdate';
   static const String newTaskUrl = '$_baseUrl/listTaskByStatus/New';
   static const String progressTasksUrl = '$_baseUrl/listTaskByStatus/Progress';
   static const String cancleTasksUrl = '$_baseUrl/listTaskByStatus/Cancelled';

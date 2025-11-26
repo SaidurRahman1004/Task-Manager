@@ -60,11 +60,15 @@ class _TaskCardState extends State<TaskCard> {
                   ),
                 ),
                 Spacer(),
-                IconButton(
-                  onPressed: () {
-                    showDeleteConfirmationDialog();
-                  },
-                  icon: Icon(Icons.delete, color: Colors.red),
+                Visibility(
+                  visible: _deleteInProgress == false,
+                  replacement: Center(child: CenteredCircularProgress()),
+                  child: IconButton(
+                    onPressed: () {
+                      showDeleteConfirmationDialog();
+                    },
+                    icon: Icon(Icons.delete, color: Colors.red),
+                  ),
                 ),
                 Visibility(
                   visible: _changeStatusInProgress == false,

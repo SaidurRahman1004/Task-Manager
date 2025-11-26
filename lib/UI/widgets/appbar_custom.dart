@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_manager_app/UI/controllers/auth_controller.dart';
-import 'package:task_manager_app/UI/screens/sign_in_screen.dart';
-import 'package:task_manager_app/UI/screens/update_profile_screen.dart';
+import 'dart:convert';
 
 class TaskManagerAppBar extends StatelessWidget implements PreferredSizeWidget {
   const TaskManagerAppBar({super.key,  this.fromUpdateProfile = false});
@@ -20,7 +19,9 @@ class TaskManagerAppBar extends StatelessWidget implements PreferredSizeWidget {
           spacing: 12,
           children: [
             CircleAvatar(
-              backgroundImage: NetworkImage("https://i.postimg.cc/K4hb3sYj/photo-6089341595493797355-y.jpg",),
+              child: AuthController.user!.photo.isEmpty ? Icon(Icons.person) : Image.memory(
+                base64Decode(AuthController.user!.photo,),fit: BoxFit.cover,
+              ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

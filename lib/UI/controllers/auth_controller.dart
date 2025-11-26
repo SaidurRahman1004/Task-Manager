@@ -16,7 +16,7 @@ class AuthController {
     SharedPreferences sharedPreferences =
         await SharedPreferences.getInstance(); // Get SharedPreferences instance
 
-    if(token.isNotEmpty){
+    if (token.isNotEmpty) {
       // Save user info as JSON string
       await sharedPreferences.setString(_tokenKey, token); // Save token
       await sharedPreferences.setString(
@@ -26,10 +26,19 @@ class AuthController {
       accessToken = token; // Save token in memory
       user = userModel; // Save user model in memory
       debugPrint('User Data Saved');
-    }else{
+    } else {
       debugPrint('Token is empty. User Data not saved.');
     }
+  }
 
+  /// Method to Update  UserInfo Info if  login and Reg Seccessful
+  static Future<void> updateUserData(UserModel userModel) async {
+    SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance(); // Get SharedPreferences instance
+    // Save user info as JSON string
+    await sharedPreferences.setString(_userKey, jsonEncode(userModel.toJson()));
+    user = userModel; // Save user model in memory
+    debugPrint('User Data Saved');
   }
 
   /// Method to load token and User Info when app starts get from SharedPreferences
@@ -63,9 +72,7 @@ class AuthController {
         await SharedPreferences.getInstance(); // Get SharedPreferences instance
     sharedPreferences.clear(); // Clear all data in SharedPreferences
 
-
     //await sharedPreferences.remove(_tokenKey); // Remove token
     //await sharedPreferences.remove(_userKey); // Remove user info
-
   }
 }
