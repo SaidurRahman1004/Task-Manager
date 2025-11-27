@@ -60,7 +60,7 @@ class _CompletedTaskListScreenState extends State<CompletedTaskListScreen> {
       Urls.completedTasksUrl,
     );
     //if success, parse data and update list of completed tasks
-    if(response.isSuuccess){
+    if(response.isSuccess){
       //temporary list to store fetched tasks
       List<TaskModel> list = [];
       //iterating through each task data in response
@@ -72,7 +72,7 @@ class _CompletedTaskListScreenState extends State<CompletedTaskListScreen> {
       _completedTaskList = list;
     }else{
       //if error, show snackbar with error message
-      showSnackBarMessage(context, response.errorMassage);
+      showSnackBarMessage(context, response.errorMessage);
     }
     // loading ended
     _getCopletedTaskListInProgress = false;

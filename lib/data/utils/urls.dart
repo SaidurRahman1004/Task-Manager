@@ -17,4 +17,9 @@ class Urls {
 
   // Function to generate URL for deleting a task by ID
   static String deleteTaskById(String taskId) => '$_baseUrl/deleteTask/$taskId';
+
+  // Forgot Password endpoints
+  static String sendOtpToEmailUrl(String email) => '$_baseUrl/RecoverVerifyEmail/$email';
+  static String verifyOtpUrl(String email, String otp) => '$_baseUrl/RecoverVerifyOtp/$email/$otp';
+  static const String resetPasswordUrl = '$_baseUrl/RecoverResetPassword';
 }

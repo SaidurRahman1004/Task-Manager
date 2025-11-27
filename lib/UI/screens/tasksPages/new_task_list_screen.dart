@@ -127,14 +127,14 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
       Urls.newTaskUrl,
     );
 
-    if (response.isSuuccess) {
+    if (response.isSuccess) {
       List<TaskModel> list = [];
       for (Map<String, dynamic> jsonData in response.body['data']) {
         list.add(TaskModel.fromJson(jsonData));
       }
       _newTaskList = list;
     } else {
-      showSnackBarMessage(context, response.errorMassage);
+      showSnackBarMessage(context, response.errorMessage);
     }
     _getNewTaskListInProgress = false;
     setState(() {});
@@ -148,14 +148,14 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
       Urls.takCountUrl,
     );
 
-    if (response.isSuuccess) {
+    if (response.isSuccess) {
       List<TaskCountModel> list = [];
       for (Map<String, dynamic> jsonData in response.body['data']) {
         list.add(TaskCountModel.fromJson(jsonData));
       }
       _taskCountList = list;
     } else {
-      showSnackBarMessage(context, response.errorMassage);
+      showSnackBarMessage(context, response.errorMessage);
     }
     _getTaskCountInProgress = false;
     setState(() {});

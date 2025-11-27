@@ -90,7 +90,7 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
 
     //Create Request Body
 
-    Map<String, dynamic> rewuestbody = {
+    Map<String, dynamic> requestBody = {
       'title': _titleTEController.text.trim(),
       'description': _descriptionTEController.text.trim(),
       'status': "New",
@@ -100,18 +100,18 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
 
     final NetworkResponse response = await Networkcaller.postRequest(
       Urls.createNewTaskUrl,
-      body: rewuestbody,
+      body: requestBody,
     );
     _addNewTaskInProgress = false;
     setState(() {});
 
-    if (response.isSuuccess) {
+    if (response.isSuccess) {
       showSnackBarMessage(context, "Task added successfully");
       _clearTextFields();
     } else {
       showSnackBarMessage(
         context,
-        response.errorMassage ?? "Something went wrong",
+        response.errorMessage,
       );
     }
   }

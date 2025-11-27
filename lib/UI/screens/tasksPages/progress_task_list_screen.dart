@@ -55,7 +55,7 @@ class _ProgressTaskListScreenState extends State<ProgressTaskListScreen> {
     final NetworkResponse response = await Networkcaller.getRequest(
       Urls.progressTasksUrl,
     );
-    if (response.isSuuccess) {
+    if (response.isSuccess) {
       List<TaskModel> list = [];
       for (Map<String, dynamic> jsonData in response.body['data']) {
         list.add(TaskModel.fromJson(jsonData));
@@ -63,7 +63,7 @@ class _ProgressTaskListScreenState extends State<ProgressTaskListScreen> {
       _progressTaskList = list;
     } else {
       showSnackBarMessage(
-          context, response.errorMassage
+          context, response.errorMessage
       );
     }
     _getProgressTaskListInProgress = false;

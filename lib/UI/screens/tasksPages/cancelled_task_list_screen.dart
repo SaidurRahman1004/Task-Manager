@@ -56,14 +56,14 @@ class _CancelledTaskListScreenState extends State<CancelledTaskListScreen> {
     final NetworkResponse response = await Networkcaller.getRequest(
       Urls.cancleTasksUrl,
     );
-    if(response.isSuuccess){
+    if(response.isSuccess){
       List<TaskModel> list = [];
       for (Map<String, dynamic> jsonData in response.body['data']) {
         list.add(TaskModel.fromJson(jsonData));
       }
       _cancelledTaskList = list;
     }else{
-      showSnackBarMessage(context, response.errorMassage);
+      showSnackBarMessage(context, response.errorMessage);
     }
     _getCancelledTaskListInProgress = false;
     setState(() {});
