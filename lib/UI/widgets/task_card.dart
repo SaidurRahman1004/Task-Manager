@@ -158,13 +158,13 @@ class _TaskCardState extends State<TaskCard> {
     final NetworkResponse response = await Networkcaller.getRequest(
       Urls.changeTaskStatusUrl(widget.taskModel.id, status),
     );
-    if (response.isSuuccess) {
+    if (response.isSuccess) {
       showSnackBarMessage(context, 'Task status changed to $status'); //comment
       widget.refreshList();
     } else {
       showSnackBarMessage(
         context,
-        'Failed to change task status ${response.errorMassage}',
+        'Failed to change task status ${response.errorMessage}',
       );
     }
   }
@@ -195,14 +195,14 @@ class _TaskCardState extends State<TaskCard> {
     );
     _deleteInProgress = false;
     setState(() {});
-    if (response.isSuuccess) {
+    if (response.isSuccess) {
       showSnackBarMessage(context, 'Task deleted successfully');
 
       widget.refreshList();
     } else {
       showSnackBarMessage(
         context,
-        'Failed to delete task: ${response.errorMassage}',
+        'Failed to delete task: ${response.errorMessage}',
       );
     }
   }
