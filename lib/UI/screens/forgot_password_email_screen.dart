@@ -58,12 +58,14 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
                     },
                   ),
                   SizedBox(height: 8),
-                  Visibility(
-                    visible: _inProgressLoading == false,
-                    replacement: CenteredCircularProgress(),
-                    child: FilledButton(
-                      onPressed: _onSentOtp,
-                      child: Icon(Icons.arrow_circle_right_outlined),
+                  Center(
+                    child: Visibility(
+                      visible: _inProgressLoading == false,
+                      replacement: CenteredCircularProgress(),
+                      child: FilledButton(
+                        onPressed: _onSentOtp,
+                        child: Icon(Icons.arrow_circle_right_outlined),
+                      ),
                     ),
                   ),
                   SizedBox(height: 24),
