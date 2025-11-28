@@ -3,10 +3,18 @@ class Urls {
   static const String registerEndpoint = '$_baseUrl/Registration';
   static const String loginEndpoint = '$_baseUrl/Login';
   static const String createNewTaskUrl = '$_baseUrl/createTask';
-  static const String updateProfileUrl  = '$_baseUrl/ProfileUpdate';
+  static const String updateProfileUrl = '$_baseUrl/ProfileUpdate';
   static const String newTaskUrl = '$_baseUrl/listTaskByStatus/New';
   static const String progressTasksUrl = '$_baseUrl/listTaskByStatus/Progress';
   static const String cancleTasksUrl = '$_baseUrl/listTaskByStatus/Cancelled';
+  ///RecoverResetPassword email,otp,pass bdy
+  static const String recoverResetPasswordUrl = '$_baseUrl/RecoverResetPassword';
+//Recovary Email Veryfy
+  static String recoverVerifyEmailUrl (String email) => '$_baseUrl/RecoverVerifyEmail/$email';
+//Function For otp veryfy
+  static String recoverVerifyOtpUrl (String email,otp) => '$_baseUrl/RecoverVerifyOtp/$email/$otp';
+
+
   static const String completedTasksUrl =
       '$_baseUrl/listTaskByStatus/Completed';
   static const String takCountUrl = '$_baseUrl/taskStatusCount';

@@ -73,7 +73,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                   ),
                   SizedBox(height: 8),
                   PhotoPickerWidget(onPressed: () {
-                    _pickImage();
+                     _pickImage();
                   }),
 
                   ///import '../widgets/photo_picker.dart';
