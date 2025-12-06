@@ -66,13 +66,20 @@ class _ForgotPasswordVerifyOtpScreenState
                 backgroundColor: Colors.blue.shade50,
                 enableActiveFill: true,
                 appContext: context,
+                onChanged: (value){
+                  _otp = value;
+                },
+                onCompleted: (value){
+                  _otp = value;
+                  print('Oto Entered: $_otp');
+                },
               ),
               SizedBox(height: 8),
               Visibility(
                 visible: _otpSentProgressTask == false,
                 replacement: Center(child: CenteredCircularProgress()),
                 child: FilledButton(
-                  onPressed: _onSientOtp,
+                  onPressed: _onVerifyOtp,
                   child: Text('Verify'),
                 ),
               ),
@@ -109,7 +116,7 @@ class _ForgotPasswordVerifyOtpScreenState
   }
 
   //login Button
-  Future<void> _onSientOtp() async {
+  Future<void> _onVerifyOtp() async {
     if (_email == null || _email!.isEmpty) {
       showSnackBarMessage(context, 'Email Not Found, Please try again');
       return;
@@ -122,13 +129,15 @@ class _ForgotPasswordVerifyOtpScreenState
 
     _otpSentProgressTask = true;
     setState(() {});
+    print('Verifying OTP: $_otp for email: $_email');
 
     final NetworkResponse response = await Networkcaller.getRequest(
       Urls.recoverVerifyOtpUrl(_email!, _otp)
     );
     _otpSentProgressTask = false;
     setState(() {});
-    if(response.isSuuccess){
+    if(response.isSuccess){
+      showSnackBarMessage(context, 'OTP verified successfully');
       Navigator.pushNamed(context, '/reset',arguments: {'email':_email,'otp':_otp,});
     }else{
       showSnackBarMessage(context, response.errorMassage ?? 'Failed to verify OTP, Please try again');

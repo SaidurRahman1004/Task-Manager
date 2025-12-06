@@ -149,33 +149,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void _onSignUp() {
     if (_formKey.currentState!.validate()) {
       //Sign Up Functionality
-      Future<void> _signUp() async {
-        _signUpInProgress = true;
-        setState(() {});
-        Map<String, String> requestBody = {
-          'email': _emailTEController.text.trim(),
-          'first_name': _firstNameTEController.text.trim(),
-          'last_name': _lastNameTEController.text.trim(),
-          'mobile': _mobileTEController.text.trim(),
-          'password': _passwordTEController.text.trim(),
-        };
-        NetworkResponse response = await Networkcaller.postRequest(
-          Urls.registerEndpoint,
-          body: requestBody,
-        );
-        _signUpInProgress = false;
-        setState(() {
+      _signUp();
 
-        });
-        if(response.isSuuccess){
-          _clearTextFields();
-          showSnackBarMessage(context, 'Sign Up Successful! Please Log In.');
-          Navigator.pushReplacementNamed(context, '/login');
-        }else{
-          showSnackBarMessage(context, response.errorMassage);
-        }
-      }
+    }
+  }
 
+  Future<void> _signUp() async {
+    _signUpInProgress = true;
+    setState(() {});
+    Map<String, String> requestBody = {
+      'email': _emailTEController.text.trim(),
+      'firstName': _firstNameTEController.text.trim(),
+      'lastName': _lastNameTEController.text.trim(),
+      'mobile': _mobileTEController.text.trim(),
+      'password': _passwordTEController.text.trim(),
+    };
+    NetworkResponse response = await Networkcaller.postRequest(
+      Urls.registerEndpoint,
+      body: requestBody,
+    );
+    _signUpInProgress = false;
+    setState(() {
+
+    });
+    if(response.isSuccess){
+      _clearTextFields();
+      showSnackBarMessage(context, 'Sign Up Successful! Please Log In.');
+      Navigator.pushReplacementNamed(context, '/login');
+    }else{
+      showSnackBarMessage(context, response.errorMassage);
     }
   }
   void _clearTextFields(){

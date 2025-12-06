@@ -119,7 +119,7 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
       _inProgressLoading = false;
     });
 
-    if(response.isSuuccess){
+    if(response.isSuccess){
       showSnackBarMessage(context, 'OTP sent successfully');
       Navigator.pushNamed(context, '/otp', arguments: {'email': email});
     }else{
