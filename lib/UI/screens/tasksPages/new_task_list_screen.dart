@@ -127,7 +127,7 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
       Urls.newTaskUrl,
     );
 
-    if (response.isSuuccess) {
+    if (response.isSuccess) {
       List<TaskModel> list = [];
       for (Map<String, dynamic> jsonData in response.body['data']) {
         list.add(TaskModel.fromJson(jsonData));
@@ -148,7 +148,7 @@ class _NewTaskListScreenState extends State<NewTaskListScreen> {
       Urls.takCountUrl,
     );
 
-    if (response.isSuuccess) {
+    if (response.isSuccess) {
       List<TaskCountModel> list = [];
       for (Map<String, dynamic> jsonData in response.body['data']) {
         list.add(TaskCountModel.fromJson(jsonData));

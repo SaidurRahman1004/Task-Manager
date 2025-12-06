@@ -193,7 +193,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
     _updateProfileInProgress = false;
     setState(() {});
 
-    if(response.isSuuccess){
+    if(response.isSuccess){
       requestBody['_id'] = AuthController.user!.id;
       await AuthController.updateUserData(UserModel.fromJson(requestBody));
       showSnackBarMessage(context, 'Profile updated successfully');

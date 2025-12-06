@@ -158,7 +158,7 @@ class _TaskCardState extends State<TaskCard> {
     final NetworkResponse response = await Networkcaller.getRequest(
       Urls.changeTaskStatusUrl(widget.taskModel.id, status),
     );
-    if (response.isSuuccess) {
+    if (response.isSuccess) {
       showSnackBarMessage(context, 'Task status changed to $status'); //comment
       widget.refreshList();
     } else {
@@ -195,7 +195,7 @@ class _TaskCardState extends State<TaskCard> {
     );
     _deleteInProgress = false;
     setState(() {});
-    if (response.isSuuccess) {
+    if (response.isSuccess) {
       showSnackBarMessage(context, 'Task deleted successfully');
 
       widget.refreshList();

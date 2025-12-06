@@ -22,27 +22,27 @@ class Networkcaller {
       final decodedData = jsonDecode(response.body); // Decode JSON response
       if (response.statusCode == 200) {
         return NetworkResponse(
-          isSuuccess: true,
+          isSuccess: true,
           responseCode: response.statusCode,
           body: decodedData,
         );
       } else if (response.statusCode == 401) {
         await _onUnauthorize();
         return NetworkResponse(
-          isSuuccess: false,
+          isSuccess: false,
           responseCode: response.statusCode,
           errorMassage: 'Unauthorized Access',
         );
       } else {
         return NetworkResponse(
-          isSuuccess: false,
+          isSuccess: false,
           responseCode: response.statusCode,
           errorMassage: decodedData['data'],
         ); // If error occurs, the 'data' field from decodedData is being taken as errorMessage
       }
     } catch (e) {
       return NetworkResponse(
-        isSuuccess: false,
+        isSuccess: false,
         responseCode: -1,
         errorMassage: e.toString(),
       ); // In case of exception, return -1 as response code and exception message as errorMessage
@@ -73,7 +73,7 @@ class Networkcaller {
       final decodedData = jsonDecode(response.body); // Decode JSON response
       if (response.statusCode == 200) {
         return NetworkResponse(
-          isSuuccess: true,
+          isSuccess: true,
           responseCode: response.statusCode,
           body: decodedData,
         );
@@ -81,14 +81,14 @@ class Networkcaller {
       else if (response.statusCode == 401) {
         await _onUnauthorize();
         return NetworkResponse(
-          isSuuccess: false,
+          isSuccess: false,
           responseCode: response.statusCode,
           errorMassage: 'Unauthorized Access',
         );
       }
       else {
         return NetworkResponse(
-          isSuuccess: false,
+          isSuccess: false,
           responseCode: response.statusCode,
           errorMassage:
               decodedData['data']?.toString() ?? 'Unknown error occurred',
@@ -96,7 +96,7 @@ class Networkcaller {
       }
     } catch (e) {
       return NetworkResponse(
-        isSuuccess: false,
+        isSuccess: false,
         responseCode: -1,
         errorMassage: e.toString(),
       );
@@ -127,13 +127,13 @@ class Networkcaller {
 
 //Model class
 class NetworkResponse {
-  final bool isSuuccess; // To check if request is success or failed
+  final bool isSuccess; // To check if request is success or failed
   final int responseCode; // HTTP Response code
   final dynamic body; //Data from Server if seccess
   final String errorMassage;
 
   NetworkResponse({
-    required this.isSuuccess,
+    required this.isSuccess,
     required this.responseCode,
     this.body,
     this.errorMassage = "Something went wrong!", // Default error message

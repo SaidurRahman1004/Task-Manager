@@ -140,7 +140,7 @@ class _SignInScreenState extends State<SignInScreen> {
     setState(() {});
 
     ///handling response
-    if (response.isSuuccess) {
+    if (response.isSuccess) {
       //save user data if available
       if (response.body != null && response.body['data'] != null) {
         UserModel userModel = UserModel.fromJson(response.body['data']);

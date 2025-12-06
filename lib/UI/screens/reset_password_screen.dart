@@ -148,7 +148,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       _inResetProgress = false;
     });
 
-    if(response.isSuuccess){
+    if(response.isSuccess){
       showSnackBarMessage(context, 'Password reset successfully. Please sign in with your new password.');
       Navigator.pushNamedAndRemoveUntil(context, '/login', (route)=> false);
     }else{
