@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_manager_app/UI/screens/splash_screen.dart';
+import 'UI/providers/add_new_task_provider.dart';
+import 'UI/providers/cancelled_taskList_providers.dart';
+import 'UI/providers/completed_task_list_provider.dart';
 import 'UI/providers/new_task_list_provider.dart';
+import 'UI/providers/progress_task_list_provider.dart';
+import 'UI/providers/update_profile_provider.dart';
 import 'UI/screens/add_new_task_screen.dart';
 import 'UI/screens/forgot_password_email_screen.dart';
 import 'UI/screens/main_bottom_bav_holder_screen.dart';
@@ -21,7 +26,12 @@ class TaskManegerApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         // ChangeNotifierProvider(create: (_)=> SignInProvider())
-        ChangeNotifierProvider(create: (_)=> NewTaskListProvider())
+        ChangeNotifierProvider(create: (_)=> AddNewTaskProvider()),
+        ChangeNotifierProvider(create: (_)=> CancleTaskProvider()),
+        ChangeNotifierProvider(create: (_)=> CompletedTaskListProvider()),
+        ChangeNotifierProvider(create: (_)=> ProgressTaskListProvider()),
+        ChangeNotifierProvider(create: (_)=> UpdateProfileProvider()),
+        ChangeNotifierProvider(create: (_)=> NewTaskListProvider()),
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,

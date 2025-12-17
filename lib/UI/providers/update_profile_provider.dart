@@ -60,6 +60,7 @@ class UpdateProfileProvider extends ChangeNotifier {
     if(response.isSuccess){
       UserModel updatedUser = UserModel.fromJson(response.body['data']);
       await AuthController.updateUserData(updatedUser);
+      _pickedImage = null;
       _updateProfileErrorMsg = null;
       notifyListeners();
       return true;
