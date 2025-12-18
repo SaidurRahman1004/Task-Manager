@@ -167,6 +167,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
 
     if (seccceed) {
       showSnackBarMessage(context, 'Profile updated successfully');
+      final user = AuthController.user;
+      if(user != null){
+        _emailController.text = user.email;
+        _firstNameController.text = user.firstName;
+        _lastNameController.text = user.lastName;
+        _mobileController.text = user.mobile;
+        _passwordController.clear();
+
+      }
     } else {
       showSnackBarMessage(
         context,

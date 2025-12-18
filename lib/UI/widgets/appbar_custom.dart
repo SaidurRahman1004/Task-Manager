@@ -2,10 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:task_manager_app/UI/controllers/auth_controller.dart';
 import 'dart:convert';
 
-class TaskManagerAppBar extends StatelessWidget implements PreferredSizeWidget {
+class TaskManagerAppBar extends StatefulWidget implements PreferredSizeWidget {
   const TaskManagerAppBar({super.key,  this.fromUpdateProfile = false});
   final bool fromUpdateProfile;
 
+  @override
+  State<TaskManagerAppBar> createState() => _TaskManagerAppBarState();
+
+  @override
+
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+}
+
+class _TaskManagerAppBarState extends State<TaskManagerAppBar> {
   @override
   Widget build(BuildContext context) {
     final txtStyle = Theme.of(context).textTheme;
@@ -13,15 +22,18 @@ class TaskManagerAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.green,
       title: GestureDetector(
         onTap: (){
-          Navigator.pushNamed(context, '/updateProfile');
+          Navigator.pushNamed(context, '/updateProfile').then((_){
+            if(mounted){
+              setState(() {});
+            }
+          });
         },
         child: Row(
           spacing: 12,
           children: [
             CircleAvatar(
-              child: AuthController.user!.photo.isEmpty ? Icon(Icons.person) : Image.memory(
-                base64Decode(AuthController.user!.photo,),fit: BoxFit.cover,
-              ),
+              backgroundImage: _getImageProvidr(),
+              child: _getImageProvidr() == null ? Icon(Icons.person) : null,
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,6 +63,21 @@ class TaskManagerAppBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  @override
+  ImageProvider ? _getImageProvidr(){
+    final String? photo = AuthController.user?.photo;
+    if(photo != null && photo.isNotEmpty){
+      try{
+        return MemoryImage(base64Decode(photo));
+
+      }catch(e){
+        return null;
+
+      }
+    }
+    return null;
+  }
+
+
+
   Size get preferredSize => Size.fromHeight(kToolbarHeight);
 }
