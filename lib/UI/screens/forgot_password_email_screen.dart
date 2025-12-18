@@ -1,12 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:task_manager_app/UI/widgets/background_screen.dart';
 import 'package:task_manager_app/UI/widgets/circular_progress.dart';
-import 'package:task_manager_app/data/service/network_caller.dart';
-import '../../app.dart';
-
-import '../../data/utils/urls.dart';
-import '../utils/asset_paths.dart';
+import '../providers/forgot_password_email_provider.dart';
 import '../widgets/snack_bar_message.dart';
 
 class ForgotPasswordEmailScreen extends StatefulWidget {
@@ -20,7 +17,6 @@ class ForgotPasswordEmailScreen extends StatefulWidget {
 class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
   final TextEditingController _emailcontroller = TextEditingController();
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
-  bool _inProgressLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -59,13 +55,17 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
                   ),
                   SizedBox(height: 8),
                   Center(
-                    child: Visibility(
-                      visible: _inProgressLoading == false,
-                      replacement: CenteredCircularProgress(),
-                      child: FilledButton(
-                        onPressed: _onSentOtp,
-                        child: Icon(Icons.arrow_circle_right_outlined),
-                      ),
+                    child: Consumer<ForgotPasswordEmailProvider>(
+                      builder: (context,forgetEmailProvider,child) {
+                        return Visibility(
+                          visible: forgetEmailProvider.getForgotPasswordInProgress == false,
+                          replacement: CenteredCircularProgress(),
+                          child: FilledButton(
+                            onPressed: _onSentOtp,
+                            child: Icon(Icons.arrow_circle_right_outlined),
+                          ),
+                        );
+                      }
                     ),
                   ),
                   SizedBox(height: 24),
@@ -106,24 +106,15 @@ class _ForgotPasswordEmailScreenState extends State<ForgotPasswordEmailScreen> {
   Future<void> _onSentOtp() async {
     if (!_formkey.currentState!.validate()) return;
     final email = _emailcontroller.text.trim();
+    final emailforgetProvider = Provider.of<ForgotPasswordEmailProvider>(context,listen: false);
+    final bool success = await emailforgetProvider.onSentOtp(email);
+    if(!mounted) return;
 
-    setState(() {
-      _inProgressLoading = true;
-    });
-
-    final NetworkResponse response = await Networkcaller.getRequest(
-      Urls.recoverVerifyEmailUrl(email),
-    );
-
-    setState(() {
-      _inProgressLoading = false;
-    });
-
-    if(response.isSuccess){
+    if(success){
       showSnackBarMessage(context, 'OTP sent successfully');
       Navigator.pushNamed(context, '/otp', arguments: {'email': email});
     }else{
-      showSnackBarMessage(context, response.errorMassage ?? 'Failed to send OTP');
+      showSnackBarMessage(context, emailforgetProvider.forgotPasswordErrorMsg ?? 'Failed to send OTP, please try again');
     }
   }
 

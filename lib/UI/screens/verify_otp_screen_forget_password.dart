@@ -1,12 +1,12 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:task_manager_app/UI/widgets/background_screen.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:task_manager_app/UI/widgets/circular_progress.dart';
 import 'package:task_manager_app/UI/widgets/snack_bar_message.dart';
-import 'package:task_manager_app/data/service/network_caller.dart';
-
-import '../../data/utils/urls.dart';
+import '../providers/verify_otp_screen_forget_password_provider.dart';
 
 class ForgotPasswordVerifyOtpScreen extends StatefulWidget {
   const ForgotPasswordVerifyOtpScreen({super.key});
@@ -20,14 +20,14 @@ class _ForgotPasswordVerifyOtpScreenState
     extends State<ForgotPasswordVerifyOtpScreen> {
   String? _email;
   String _otp = '';
-  bool _otpSentProgressTask = false;
+
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final args =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-    _email = args?['email'];
+    _email = args['email'];
   }
 
   @override
@@ -71,17 +71,23 @@ class _ForgotPasswordVerifyOtpScreenState
                 },
                 onCompleted: (value){
                   _otp = value;
-                  print('Oto Entered: $_otp');
+                  if (kDebugMode) {
+                    print('Oto Entered: $_otp');
+                  }
                 },
               ),
               SizedBox(height: 8),
-              Visibility(
-                visible: _otpSentProgressTask == false,
-                replacement: Center(child: CenteredCircularProgress()),
-                child: FilledButton(
-                  onPressed: _onVerifyOtp,
-                  child: Text('Verify'),
-                ),
+              Consumer<VerifyOtpScreenForgetPasswordProvider>(
+                builder: (context,verifyOtpProvider,child) {
+                  return Visibility(
+                    visible: verifyOtpProvider.otpSentProgressTask == false,
+                    replacement: Center(child: CenteredCircularProgress()),
+                    child: FilledButton(
+                      onPressed: _onVerifyOtp,
+                      child: Text('Verify'),
+                    ),
+                  );
+                }
               ),
               SizedBox(height: 24),
               Center(
@@ -126,21 +132,17 @@ class _ForgotPasswordVerifyOtpScreenState
       showSnackBarMessage(context, 'Please enter valid 6 digit OTP');
       return;
     }
-
-    _otpSentProgressTask = true;
-    setState(() {});
     print('Verifying OTP: $_otp for email: $_email');
 
-    final NetworkResponse response = await Networkcaller.getRequest(
-      Urls.recoverVerifyOtpUrl(_email!, _otp)
-    );
-    _otpSentProgressTask = false;
-    setState(() {});
-    if(response.isSuccess){
+    final verifyOtpProvider = Provider.of<VerifyOtpScreenForgetPasswordProvider>(context,listen: false);
+    final bool success = await verifyOtpProvider.onVerifyOtp(_email!, _otp);
+    if(!mounted) return;
+
+    if(success){
       showSnackBarMessage(context, 'OTP verified successfully');
       Navigator.pushNamed(context, '/reset',arguments: {'email':_email,'otp':_otp,});
     }else{
-      showSnackBarMessage(context, response.errorMassage ?? 'Failed to verify OTP, Please try again');
+      showSnackBarMessage(context, verifyOtpProvider.otpErrMassege ?? 'Failed to verify OTP, Please try again');
     }
   }
 

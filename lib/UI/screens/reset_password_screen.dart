@@ -1,11 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:task_manager_app/UI/widgets/background_screen.dart';
-import 'package:task_manager_app/data/service/network_caller.dart';
-import '../../app.dart';
-
-import '../../data/utils/urls.dart';
-import '../utils/asset_paths.dart';
+import '../providers/reset_password_provider.dart';
 import '../widgets/circular_progress.dart';
 import '../widgets/snack_bar_message.dart';
 
@@ -23,15 +20,14 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   final GlobalKey<FormState> _globalKey = GlobalKey<FormState>();
   String? _email;
   String? _otp;
-  bool _inResetProgress = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final args =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>;
-    _email = args?['email'];
-    _otp = args?['otp'];
+    _email = args['email'];
+    _otp = args['otp'];
   }
 
   @override
@@ -80,13 +76,17 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   },
                 ),
                 SizedBox(height: 8),
-                Visibility(
-                  visible: _inResetProgress == false,
-                  replacement: Center(child: CenteredCircularProgress()),
-                  child: FilledButton(
-                    onPressed: _onOrpVerify,
-                    child: Icon(Icons.arrow_circle_right_outlined),
-                  ),
+                Consumer<ResetPasswordProvider>(
+                  builder: (context, resetProvider, child) {
+                    return Visibility(
+                      visible: resetProvider.inResetProgress == false,
+                      replacement: Center(child: CenteredCircularProgress()),
+                      child: FilledButton(
+                        onPressed: _onOrpVerify,
+                        child: Icon(Icons.arrow_circle_right_outlined),
+                      ),
+                    );
+                  },
                 ),
                 SizedBox(height: 24),
                 Center(
@@ -130,29 +130,29 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     if (_globalKey.currentState?.validate() != true) {
       return;
     }
-
-    setState(() {
-      _inResetProgress = true;
-    });
-
-    final NetworkResponse  response = await Networkcaller.postRequest(
-      Urls.recoverResetPasswordUrl,
-      body: {
-        'email': _email,
-        'otp': _otp,
-        'password': _passwordController.text,
-      }
-
+    final resetPasswordProvider = Provider.of<ResetPasswordProvider>(
+      context,
+      listen: false,
     );
-    setState(() {
-      _inResetProgress = false;
-    });
+    final bool successed = await resetPasswordProvider.onOrpVerify(
+      _email!,
+      _otp!,
+      _passwordController.text,
+    );
+    if (!mounted) return;
 
-    if(response.isSuccess){
-      showSnackBarMessage(context, 'Password reset successfully. Please sign in with your new password.');
-      Navigator.pushNamedAndRemoveUntil(context, '/login', (route)=> false);
-    }else{
-      showSnackBarMessage(context, response.errorMassage ?? 'Failed to reset password, please try again');
+    if (successed) {
+      showSnackBarMessage(
+        context,
+        'Password reset successfully. Please sign in with your new password.',
+      );
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+    } else {
+      showSnackBarMessage(
+        context,
+        resetPasswordProvider.resetErrorMsg ??
+            'Failed to reset password, please try again',
+      );
     }
   }
 

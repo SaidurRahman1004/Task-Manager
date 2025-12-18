@@ -4,9 +4,13 @@ import 'package:task_manager_app/UI/screens/splash_screen.dart';
 import 'UI/providers/add_new_task_provider.dart';
 import 'UI/providers/cancelled_taskList_providers.dart';
 import 'UI/providers/completed_task_list_provider.dart';
+import 'UI/providers/forgot_password_email_provider.dart';
 import 'UI/providers/new_task_list_provider.dart';
 import 'UI/providers/progress_task_list_provider.dart';
+import 'UI/providers/reset_password_provider.dart';
+import 'UI/providers/task_card_provider.dart';
 import 'UI/providers/update_profile_provider.dart';
+import 'UI/providers/verify_otp_screen_forget_password_provider.dart';
 import 'UI/screens/add_new_task_screen.dart';
 import 'UI/screens/forgot_password_email_screen.dart';
 import 'UI/screens/main_bottom_bav_holder_screen.dart';
@@ -29,9 +33,14 @@ class TaskManegerApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_)=> AddNewTaskProvider()),
         ChangeNotifierProvider(create: (_)=> CancleTaskProvider()),
         ChangeNotifierProvider(create: (_)=> CompletedTaskListProvider()),
+        ChangeNotifierProvider(create: (_)=> ForgotPasswordEmailProvider()),
         ChangeNotifierProvider(create: (_)=> ProgressTaskListProvider()),
+        ChangeNotifierProvider(create: (_)=> ResetPasswordProvider()),
         ChangeNotifierProvider(create: (_)=> UpdateProfileProvider()),
         ChangeNotifierProvider(create: (_)=> NewTaskListProvider()),
+        ChangeNotifierProvider(create: (_)=> VerifyOtpScreenForgetPasswordProvider()),
+        ChangeNotifierProvider(create: (_)=> TaskCardProvider()),
+
       ],
       child: MaterialApp(
         navigatorKey: navigatorKey,
